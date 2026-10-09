@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket League Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rlblue: '#00d2ff',
+                        rlorange: '#ff5500',
+                        rldark: '#0b0f19',
+                        rldarker: '#06080e',
+                        rlcard: '#131b2e'
+                    },
+                    fontFamily: {
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-game {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .hero-glow {
+            background: radial-gradient(circle at 50% 30%, rgba(0, 210, 255, 0.15) 0%, rgba(255, 85, 0, 0.1) 40%, transparent 70%);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px -10px rgba(0, 210, 255, 0.25);
+            border-color: rgba(0, 210, 255, 0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #06080e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d2ff;
+        }
+    </style>
+</head>
+<body class="bg-rldark text-slate-100 selection:bg-rlblue selection:text-rldarker">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-rldarker/80 backdrop-blur-md border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#inicio" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rlorange to-rlblue p-0.5 flex items-center justify-center shadow-lg shadow-rlblue/20 group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-rldarker rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-car-rear text-rlblue text-lg"></i>
+                    </div>
+                </div>
+                <span class="font-game text-2xl font-bold tracking-wider bg-gradient-to-r from-white via-rlblue to-rlorange bg-clip-text text-transparent">
+                    ROCKET LEAGUE <span class="text-rlblue text-xs uppercase block tracking-widest -mt-1 font-montserrat">HUB</span>
+                </span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center space-x-8 font-game text-lg tracking-wide font-semibold">
+                <a href="#inicio" class="text-rlblue transition-colors hover:text-white">Inicio</a>
+                <a href="#sobre" class="text-slate-300 transition-colors hover:text-rlblue">El Juego</a>
+                <a href="#modos" class="text-slate-300 transition-colors hover:text-rlblue">Modos</a>
+                <a href="#coches" class="text-slate-300 transition-colors hover:text-rlblue">Coches</a>
+                <a href="#esports" class="text-slate-300 transition-colors hover:text-rlblue">Esports</a>
+                <a href="#consejos" class="text-slate-300 transition-colors hover:text-rlblue">Consejos</a>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <a href="https://www.rocketleague.com/" target="_blank" class="relative group overflow-hidden rounded-xl p-[2px] font-game font-bold uppercase tracking-wider text-sm">
+                    <span class="absolute inset-0 bg-gradient-to-r from-rlblue to-rlorange group-hover:opacity-100 transition-opacity"></span>
+                    <span class="relative px-5 py-2.5 bg-rldarker rounded-[10px] flex items-center space-x-2 text-white group-hover:bg-opacity-0 transition-colors">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Jugar Gratis</span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none p-2 text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-rldarker/95 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3 font-game text-lg">
+            <a href="#inicio" class="block text-rlblue py-2">Inicio</a>
+            <a href="#sobre" class="block text-slate-300 py-2">El Juego</a>
+            <a href="#modos" class="block text-slate-300 py-2">Modos</a>
+            <a href="#coches" class="block text-slate-300 py-2">Coches</a>
+            <a href="#esports" class="block text-slate-300 py-2">Esports</a>
+            <a href="#consejos" class="block text-slate-300 py-2">Consejos</a>
+            <div class="pt-2">
+                <a href="https://www.rocketleague.com/" target="_blank" class="w-full py-3 bg-gradient-to-r from-rlblue to-rlorange text-white font-bold rounded-xl text-center block shadow-lg shadow-rlblue/30">
+                    Jugar Gratis
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 hero-glow overflow-hidden">
+        <!-- Background Decor Elements -->
+        <div class="absolute inset-0 pointer-events-none opacity-20">
+            <div class="absolute top-1/4 left-10 w-72 h-72 rounded-full bg-rlblue filter blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-10 w-96 h-96 rounded-full bg-rlorange filter blur-[120px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 bg-slate-800/80 border border-slate-700/80 px-4 py-1.5 rounded-full text-xs font-semibold text-rlblue tracking-wider uppercase backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-rlblue animate-pulse"></span>
+                    <span>El juego definitivo de fútbol con coches</span>
+                </div>
+                <h1 class="font-game text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none uppercase">
+                    Domina el campo. <br>
+                    <span class="bg-gradient-to-r from-rlblue via-sky-300 to-rlorange bg-clip-text text-transparent">Vuela hacia la gloria.</span>
+                </h1>
+                <p class="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                    Fútbol y automovilismo unidos en un mismo lugar, con físicas increíble, acrobacias aéreas deslumbrantes y una jugabilidad competitiva inigualable. Únete a millones de jugadores en todo el mundo.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <a href="https://www.rocketleague.com/" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-rlblue to-cyan-500 hover:from-cyan-400 hover:to-rlblue text-rldarker font-game text-xl font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-rlblue/30 transform hover:-translate-y-0.5 transition-all flex items-center justify-center space-x-3">
+                        <span>Jugar Gratis Ahora</span>
+                    </a>
+                    <a href="#sobre" class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-white font-game text-xl font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center space-x-3">
+                        <span>Explorar Guía</span>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Visual Card / Graphic -->
+            <div class="lg:col-span-5">
+                <div class="relative bg-gradient-to-b from-slate-800/60 to-slate-900/80 p-6 rounded-3xl border border-slate-700/60 shadow-2xl backdrop-blur-md group">
+                    <div class="absolute -top-3 -right-3 bg-rlorange text-white font-game font-bold text-xs px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                        Temporada Activa
+                    </div>
+                    <div class="rounded-2xl overflow-hidden aspect-video bg-slate-950 relative flex items-center justify-center border border-slate-800">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-rldarker via-slate-900 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
+                            <i class="fa-solid fa-trophy text-6xl text-rlorange mb-4 animate-bounce"></i>
+                            <h3 class="font-game text-2xl font-bold tracking-wider text-white">RLCS WORLD CHAMPIONSHIP</h3>
+                            <p class="text-sm text-slate-400 mt-2">La máxima competición global de esports automovilísticos.</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                        <div class="bg-rldarker/60 p-3 rounded-xl border border-slate-800">
+                            <span class="block font-game text-2xl font-bold text-rlblue">90M+</span>
+                            <span class="text-xs text-slate-400 uppercase font-semibold">Jugadores</span>
+                        </div>
+                        <div class="bg-rldarker/60 p-3 rounded-xl border border-slate-800">
+                            <span class="block font-game text-2xl font-bold text-rlorange">1v1 - 4v4</span>
+                            <span class="text-xs text-slate-400 uppercase font-semibold">Modos</span>
+                        </div>
+                        <div class="bg-rldarker/60 p-3 rounded-xl border border-slate-800">
+                            <span class="block font-game text-2xl font-bold text-emerald-400">Epic Games</span>
+                            <span class="text-xs text-slate-400 uppercase font-semibold">Desarrollador</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Banner -->
+        <div class="absolute bottom-0 left-0 right-0 hidden md:block bg-rldarker/90 border-t border-slate-800 py-4">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8 text-center">
+                <div>
+                    <span class="font-game text-xl font-bold text-rlblue block">Física Realista</span>
+                    <span class="text-xs text-slate-400">Control total del balón y coche</span>
+                </div>
+                <div>
+                    <span class="font-game text-xl font-bold text-rlorange block">Cross-Play Total</span>
+                    <span class="text-xs text-slate-400">PC, PlayStation, Xbox, Switch</span>
+                </div>
+                <div>
+                    <span class="font-game text-xl font-bold text-emerald-400 block">Personalización Infinita</span>
+                    <span class="text-xs text-slate-400">Millones de combinaciones cosméticas</span>
+                </div>
+                <div>
+                    <span class="font-game text-xl font-bold text-purple-400 block">Acción Competitiva</span>
+                    <span class="text-xs text-slate-400">Rango de Bronce a Leyenda Supersónica</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-24 px-4 bg-rldarker relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rlblue font-game font-bold tracking-widest uppercase text-sm">Concepto Único</span>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold uppercase mt-2 mb-4">
+                    ¿Qué es <span class="text-rlorange">Rocket League</span>?
+                </h2>
+                <p class="text-slate-400 text-lg">
+                    Desarrollado por <span class="text-white font-semibold">Psyonix</span> y publicado por <span class="text-white font-semibold">Epic Games</span>, es el híbrido arcade definitivo entre el fútbol tradicional y el automovilismo acrobático de alta velocidad.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-14 h-14 rounded-xl bg-rlblue/10 flex items-center justify-center text-rlblue text-2xl mb-6">
+                        <i class="fa-solid fa-futbol"></i>
+                    </div>
+                    <h3 class="font-game text-2xl font-bold uppercase mb-3">Fútbol Aéreo</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Golpea un balón gigante hacia la portería contraria utilizando impulso turbo, saltos dobles y acrobacias aéreas imposibles en campos cerrados tipo arena.
+                    </p>
+                </div>
+
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-14 h-14 rounded-xl bg-rlorange/10 flex items-center justify-center text-rlorange text-2xl mb-6">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h3 class="font-game text-2xl font-bold uppercase mb-3">Impulso y Velocidad</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Gestiona tus tanques de nitro repartidos por el mapa para alcanzar velocidades supersónicas, romper la barrera del sonido y desatar tiros imparables.
+                    </p>
+                </div>
+
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-game text-2xl font-bold uppercase mb-3">Competitivo y Justo</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Sin elementos "pay-to-win". Tu victoria depende completamente de tu habilidad mecánica, posicionamiento táctico, lectura del juego y química en equipo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Modes Section -->
+    <section id="modos" class="py-24 px-4 bg-rldark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rlblue font-game font-bold tracking-widest uppercase text-sm">Variedad de Juego</span>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold uppercase mt-2 mb-4">
+                    Modos de Juego <span class="text-rlblue">Destacados</span>
+                </h2>
+                <p class="text-slate-400 text-lg">
+                    Desde el clásico competitivo hasta locuras con potenciadores y deportes alternativos.
+                </p>
+            </div>
+
+            <!-- Mode Tabs Header -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="switchMode('soccer')" id="btn-soccer" class="mode-tab px-6 py-3 rounded-xl font-game font-bold text-lg uppercase transition-all bg-rlblue text-rldarker shadow-lg shadow-rlblue/30">
+                    Soccer (Estándar)
+                </button>
+                <button onclick="switchMode('extra')" id="btn-extra" class="mode-tab px-6 py-3 rounded-xl font-game font-bold text-lg uppercase transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    Modos Extra
+                </button>
+                <button onclick="switchMode('torneos')" id="btn-torneos" class="mode-tab px-6 py-3 rounded-xl font-game font-bold text-lg uppercase transition-all bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    Torneos y Competitivo
+                </button>
+            </div>
+
+            <!-- Mode Tabs Content Container -->
+            <div id="content-soccer" class="mode-content grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-rlcard p-8 sm:p-12 rounded-3xl border border-slate-800">
+                <div class="space-y-6">
+                    <span class="bg-rlblue/10 text-rlblue px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">El Núcleo Competitivo</span>
+                    <h3 class="font-game text-3xl sm:text-4xl font-bold uppercase">Soccer 3v3 y 2v2</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Es el corazón de Rocket League. Dos equipos (Azul y Naranja) compiten por introducir el balón en la portería contraria dentro de estadios cerrado futuristas. 
+                    </p>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-rlblue"></i> <span>Listas de juego Ranked (1v1, 2v2 y 3v3 Standard).</span></li>
+                        <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-rlblue"></i> <span>Rotación de puestos vital para la defensa y ataque.</span></li>
+                        <li class="flex items-center space-x-3"><i class="fa-solid fa-check text-rlblue"></i> <span>El formato oficial utilizado en los campeonatos mundiales RLCS.</span></li>
+                    </ul>
+                </div>
+                <div class="bg-slate-950 p-8 rounded-2xl border border-slate-800 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[280px]">
+                    <i class="fa-solid fa-shield-dog text-rlblue text-7xl mb-4 opacity-80"></i>
+                    <h4 class="font-game text-2xl font-bold tracking-wide">Rango Máximo: Supersonic Legend</h4>
+                    <p class="text-xs text-slate-400 mt-2">Demuestra tu destreza superando todos los rangos del juego.</p>
+                </div>
+            </div>
+
+            <div id="content-extra" class="mode-content hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-12 h-12 rounded-lg bg-rlorange/10 text-rlorange flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-basketball"></i>
+                    </div>
+                    <h4 class="font-game text-xl font-bold mb-2">Hoops (Baloncesto)</h4>
+                    <p class="text-slate-400 text-sm">Encesta el balón en canastas elevadas usando las paredes y el techo para realizar mates espectaculares.</p>
+                </div>
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-12 h-12 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <h4 class="font-game text-xl font-bold mb-2">Dropshot</h4>
+                    <p class="text-slate-400 text-sm">Rompe paneles hexagonales en el suelo del contrincante golpeando el balón cargado con energía para anotar.</p>
+                </div>
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800 card-hover">
+                    <div class="w-12 h-12 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h4 class="font-game text-xl font-bold mb-2">Rumble</h4>
+                    <p class="text-slate-400 text-sm">Fútbol tradicional con potenciadores locos: guantes de boxeo, ganchos de agarre, imanes y congelaciones.</p>
+                </div>
+            </div>
+
+            <div id="content-torneos" class="mode-content hidden grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-rlcard p-8 sm:p-12 rounded-3xl border border-slate-800">
+                <div class="space-y-6">
+                    <span class="bg-rlorange/10 text-rlorange px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Competencia Diaria</span>
+                    <h3 class="font-game text-3xl sm:text-4xl font-bold uppercase">Torneos Oficiales y Copas</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Inscríbete en torneos automáticos diarios de eliminación directa por parejas o tríos. Gana créditos de torneo para canjear por objetos cosméticos exclusivos y exóticos.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="bg-rldarker p-4 rounded-xl border border-slate-800">
+                            <span class="font-game text-xl font-bold text-rlblue block">Ranked Rewards</span>
+                            <span class="text-xs text-slate-400">Recompensas exclusivas al final de temporada según tu rango.</span>
+                        </div>
+                        <div class="bg-rldarker p-4 rounded-xl border border-slate-800">
+                            <span class="font-game text-xl font-bold text-rlorange block">Modo Casual</span>
+                            <span class="text-xs text-slate-400">Prueba nuevas mecánicas sin presión ni penalizaciones por abandono.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-950 p-8 rounded-2xl border border-slate-800 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[280px]">
+                    <i class="fa-solid fa-medal text-rlorange text-7xl mb-4"></i>
+                    <h4 class="font-game text-2xl font-bold tracking-wide">¡Gana Títulos y Créditos!</h4>
+                    <p class="text-xs text-slate-400 mt-2">Demuestra que eres el mejor de tu región.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cars & Customization Section -->
+    <section id="coches" class="py-24 px-4 bg-rldarker relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rlorange font-game font-bold tracking-widest uppercase text-sm">Aerodinámica y Estilo</span>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold uppercase mt-2 mb-4">
+                    Coches Icónicos y <span class="text-rlblue">Hitboxes</span>
+                </h2>
+                <p class="text-slate-400 text-lg">
+                    Aunque hay cientos de vehículos, todos los coches comparten tipos de hitboxes estandarizados para garantizar una jugabilidad totalmente equilibrada.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Octane -->
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover relative group">
+                    <div class="absolute top-4 right-4 bg-rlblue/10 text-rlblue font-game font-bold text-xs px-3 py-1 rounded-full uppercase">
+                        El más popular
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-rlblue/10 flex items-center justify-center text-rlblue text-3xl mb-6">
+                        <i class="fa-solid fa-car"></i>
+                    </div>
+                    <h3 class="font-game text-3xl font-bold uppercase mb-2">Octane</h3>
+                    <p class="text-xs font-semibold text-rlblue uppercase tracking-wider mb-4">Hitbox: Octane</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        El coche favorito de la gran mayoría de profesionales. Excelente equilibrio entre altura, longitud y capacidad para realizar tiros potentes y redirecciones aéreas.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs text-slate-400">
+                        <div class="flex justify-between"><span>Giros:</span> <strong class="text-white">Muy equilibrados</strong></div>
+                        <div class="flex justify-between"><span>Control Aéreo:</span> <strong class="text-white">Excelente</strong></div>
+                    </div>
+                </div>
+
+                <!-- Fennec -->
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover relative group">
+                    <div class="absolute top-4 right-4 bg-rlorange/10 text-rlorange font-game font-bold text-xs px-3 py-1 rounded-full uppercase">
+                        Meta Actual
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-rlorange/10 flex items-center justify-center text-rlorange text-3xl mb-6">
+                        <i class="fa-solid fa-truck-monster"></i>
+                    </div>
+                    <h3 class="font-game text-3xl font-bold uppercase mb-2">Fennec</h3>
+                    <p class="text-xs font-semibold text-rlorange uppercase tracking-wider mb-4">Hitbox: Octane</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        Comparte exactamente la misma hitbox que el Octane, pero su forma cuadrada cuadrada facilita visualizar los rincones del coche para alinear golpes precisos al balón.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs text-slate-400">
+                        <div class="flex justify-between"><span>Giros:</span> <strong class="text-white">Idéntico a Octane</strong></div>
+                        <div class="flex justify-between"><span>Lectura visual:</span> <strong class="text-white">Superior en esquinas</strong></div>
+                    </div>
+                </div>
+
+                <!-- Dominus -->
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 card-hover relative group">
+                    <div class="absolute top-4 right-4 bg-purple-500/10 text-purple-400 font-game font-bold text-xs px-3 py-1 rounded-full uppercase">
+                        Rey del Floor Play
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-3xl mb-6">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="font-game text-3xl font-bold uppercase mb-2">Dominus</h3>
+                    <p class="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-4">Hitbox: Dominus</p>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        Un coche largo, bajo y plano. Ideal para jugadores que prefieren dominar el suelo, golpear con potencia desde la pared y realizar potentes 'flicks' con el morro.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs text-slate-400">
+                        <div class="flex justify-between"><span>Superficie de tiro:</span> <strong class="text-white">Muy amplia</strong></div>
+                        <div class="flex justify-between"><span>Velocidad de giro:</span> <strong class="text-white">Ágil y rápida</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Esports Section -->
+    <section id="esports" class="py-24 px-4 bg-rldark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rlblue font-game font-bold tracking-widest uppercase text-sm">Escena Profesional</span>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold uppercase mt-2 mb-4">
+                    Rocket League <span class="text-rlorange">Esports (RLCS)</span>
+                </h2>
+                <p class="text-slate-400 text-lg">
+                    La Rocket League Championship Series (RLCS) reúne a los mejores talentos del planeta compitiendo por millones de dólares en premios en estadios llenos.
+                </p>
+            </div>
+
+            <!-- Grid of Esports info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800">
+                    <div class="text-rlblue text-3xl mb-4 font-game font-bold">01</div>
+                    <h3 class="font-game text-xl font-bold uppercase mb-2">Majors Internacionales</h3>
+                    <p class="text-slate-400 text-sm">Torneos presenciales en distintas ciudades del mundo donde compiten los mejores equipos de Norteamérica, Europa, SAM, MENA y Oceanía.</p>
+                </div>
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800">
+                    <div class="text-rlorange text-3xl mb-4 font-game font-bold">02</div>
+                    <h3 class="font-game text-xl font-bold uppercase mb-2">Equipos Legendarios</h3>
+                    <p class="text-slate-400 text-sm">Organizaciones históricas como Team BDS, Karmine Corp, Team Vitality, G2 Esports y FaZe Clan lideran la competición global.</p>
+                </div>
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800">
+                    <div class="text-emerald-400 text-3xl mb-4 font-game font-bold">03</div>
+                    <h3 class="font-game text-xl font-bold uppercase mb-2">Premios Millonarios</h3>
+                    <p class="text-slate-400 text-sm">Bolsas de premios que superan los $6,000,000 USD anuales distribuidos a lo largo de las distintas fases del circuito mundial.</p>
+                </div>
+                <div class="bg-rlcard p-6 rounded-2xl border border-slate-800">
+                    <div class="text-purple-400 text-3xl mb-4 font-game font-bold">04</div>
+                    <h3 class="font-game text-xl font-bold uppercase mb-2">Fan Tokens y Decals</h3>
+                    <p class="text-slate-400 text-sm">Apoya a tu equipo favorito comprando calcomanías oficiales en la tienda del juego para lucir sus colores en el campo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips & Mechanics Section -->
+    <section id="consejos" class="py-24 px-4 bg-rldarker">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rlblue font-game font-bold tracking-widest uppercase text-sm">Masterclass de Mejora</span>
+                <h2 class="font-game text-4xl sm:text-5xl font-extrabold uppercase mt-2 mb-4">
+                    Consejos y <span class="text-rlblue">Mecánicas Avanzadas</span>
+                </h2>
+                <p class="text-slate-400 text-lg">
+                    ¿Atascado en Platino o Diamante? Domina estas mecánicas fundamentales para subir de rango rápidamente.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-rlblue/10 text-rlblue flex items-center justify-center text-xl font-bold">1</div>
+                        <h3 class="font-game text-2xl font-bold uppercase">Fast Aerial (Salto Aéreo Rápido)</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        En lugar de inclinar el coche hacia atrás y saltar simplemente, inclina la palanca hacia atrás, salta, suelta la palanca mientras das un segundo salto y vuelve a tirar hacia atrás. Ganarás altura el doble de rápido para llegar antes que nadie a los balones aéreos.
+                    </p>
+                </div>
+
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-rlorange/10 text-rlorange flex items-center justify-center text-xl font-bold">2</div>
+                        <h3 class="font-game text-2xl font-bold uppercase">Wave Dash</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Salta ligeramente desde el suelo, inclina tu coche hacia adelante o hacia los lados y salta de nuevo justo cuando tus ruedas traseras toquen el suelo. Obtendrás un impulso de velocidad máximo sin gastar una sola gota de nitro.
+                    </p>
+                </div>
+
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold">3</div>
+                        <h3 class="font-game text-2xl font-bold uppercase">Rotaciones Tácticas en Equipo</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Nunca vayas los dos jugadores a por el mismo balón. Si tu compañero ataca, tú debes retroceder cubriendo el centro del campo o la defensa. La comunicación y el posicionamiento ganan más partidos que las mecánicas locas.
+                    </p>
+                </div>
+
+                <div class="bg-rlcard p-8 rounded-2xl border border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl font-bold">4</div>
+                        <h3 class="font-game text-2xl font-bold uppercase">Control de Nitro Pequeño (Boost Pads)</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        No dependas únicamente de los botes grandes de 100 de nitro en las esquinas. Recoge los pequeños botes amarillos distribuidos por el campo para mantener tu tanque siempre lleno mientras rotas por el juego.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-rldarker border-t border-slate-800 py-16 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="space-y-4 md:col-span-2">
+                <a href="#inicio" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rlorange to-rlblue p-0.5 flex items-center justify-center shadow-lg">
+                        <div class="w-full h-full bg-rldarker rounded-[10px] flex items-center justify-center">
+                            <i class="fa-solid fa-car-rear text-rlblue text-lg"></i>
+                        </div>
+                    </div>
+                    <span class="font-game text-2xl font-bold tracking-wider bg-gradient-to-r from-white via-rlblue to-rlorange bg-clip-text text-transparent">
+                        ROCKET LEAGUE HUB
+                    </span>
+                </a>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Guía y portal informativo independiente para la apasionada comunidad hispanohablante de Rocket League. Competición, consejos y esports en un solo lugar.
+                </p>
+            </div>
+
+            <div class="space-y-3 font-game">
+                <h4 class="text-white font-bold text-lg uppercase tracking-wider">Enlaces Rápidos</h4>
+                <ul class="space-y-2 text-sm text-slate-400 font-montserrat">
+                    <li><a href="#inicio" class="hover:text-rlblue transition-colors">Inicio</a></li>
+                    <li><a href="#sobre" class="hover:text-rlblue transition-colors">Sobre el Juego</a></li>
+                    <li><a href="#modos" class="hover:text-rlblue transition-colors">Modos de Juego</a></li>
+                    <li><a href="#coches" class="hover:text-rlblue transition-colors">Coches y Hitboxes</a></li>
+                    <li><a href="#esports" class="hover:text-rlblue transition-colors">Esports (RLCS)</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3 font-game">
+                <h4 class="text-white font-bold text-lg uppercase tracking-wider">Comunidad y Redes</h4>
+                <div class="flex space-x-4 pt-2">
+                    <a href="https://twitter.com/RocketLeague" target="_blank" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-rlblue hover:text-rldarker flex items-center justify-center text-slate-300 transition-colors">
+                        <i class="fa-brands fa-x-twitter text-lg"></i>
+                    </a>
+                    <a href="https://www.twitch.tv/rocketleague" target="_blank" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-purple-500 hover:text-white flex items-center justify-center text-slate-300 transition-colors">
+                        <i class="fa-brands fa-twitch text-lg"></i>
+                    </a>
+                    <a href="https://www.youtube.com/rocketleague" target="_blank" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-rlorange hover:text-white flex items-center justify-center text-slate-300 transition-colors">
+                        <i class="fa-brands fa-youtube text-lg"></i>
+                    </a>
+                    <a href="https://discord.gg/rocketleague" target="_blank" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-indigo-500 hover:text-white flex items-center justify-center text-slate-300 transition-colors">
+                        <i class="fa-brands fa-discord text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+            <p>&copy; 2026 Rocket League Hub. No afiliado oficialmente con Psyonix LLC o Epic Games, Inc.</p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="#" class="hover:text-slate-400">Privacidad</a>
+                <a href="#" class="hover:text-slate-400">Términos de Uso</a>
+                <a href="#" class="hover:text-slate-400">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu & Tabs -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on click link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Game Modes Tabs Logic
+        function switchMode(mode) {
+            // Buttons
+            document.querySelectorAll('.mode-tab').forEach(btn => {
+                btn.classList.remove('bg-rlblue', 'text-rldarker', 'shadow-lg', 'shadow-rlblue/30');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            const activeBtn = document.getElementById('btn-' + mode);
+            activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+            activeBtn.classList.add('bg-rlblue', 'text-rldarker', 'shadow-lg', 'shadow-rlblue/30');
+
+            // Contents
+            document.querySelectorAll('.mode-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('content-' + mode).classList.remove('hidden');
+        }
+
+        // Navbar blur on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-rldarker/95', 'shadow-xl');
+            } else {
+                navbar.classList.remove('bg-rldarker/95', 'shadow-xl');
+            }
+        });
+    </script>
+</body>
+</html>
